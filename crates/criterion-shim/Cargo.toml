@@ -1,0 +1,16 @@
+[package]
+name = "criterion"
+# Stays in the 0.8.x range Poulpy declares. The real crate pulls rayon which
+# does not compile on wasm32-unknown-unknown; our shim exposes just enough of
+# the 0.8 surface for Poulpy's `pub fn bench_*` helpers to type-check. None of
+# those helpers are ever called from the squid code path we use, so the
+# no-op bodies never run.
+version = "0.8.2"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "No-op criterion shim used by the squid-js workspace to build Poulpy for wasm32."
+publish = false
+
+[lib]
+name = "criterion"
+path = "src/lib.rs"

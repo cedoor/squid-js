@@ -1,0 +1,12 @@
+target/
+node_modules/
+dist/
+pkg/
+*.node
+packages/squid-js/wasm/
+apps/server/native/
+apps/client/dist/
+.DS_Store
+.env
+.env.local
+*.log

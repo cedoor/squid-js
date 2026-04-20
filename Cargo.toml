@@ -1,0 +1,28 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/squid-wasm",
+    "crates/squid-napi",
+    "crates/criterion-shim",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+authors = ["squid-js contributors"]
+
+[workspace.dependencies]
+squid = { git = "https://github.com/cedoor/squid.git", default-features = false }
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+
+# Poulpy (transitively) pulls in criterion → rayon, which fails to compile on
+# wasm32. The shim in `crates/criterion-shim` exposes the subset of the 0.8
+# API Poulpy's library code touches; the functions are never invoked on the
+# squid path we drive, so the no-op bodies are safe on every target.
+[patch.crates-io]
+criterion = { path = "crates/criterion-shim" }

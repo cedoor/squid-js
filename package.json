@@ -1,0 +1,25 @@
+{
+  "name": "squid-js-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Browser-usable FHE via cedoor/squid: wasm bindings, Node bindings, and a client/server demo.",
+  "scripts": {
+    "build:wasm": "wasm-pack build crates/squid-wasm --target web --out-dir ../../packages/squid-js/wasm --out-name squid_wasm",
+    "build:napi": "pnpm --filter @squid-js/napi build",
+    "build:js": "pnpm --filter @squid-js/core build",
+    "build:server": "pnpm --filter @squid-js/server build",
+    "build:client": "pnpm --filter @squid-js/client build",
+    "build": "pnpm run build:wasm && pnpm run build:napi && pnpm run build:js && pnpm run build:server && pnpm run build:client",
+    "dev": "concurrently -n server,client -c blue,green \"pnpm --filter @squid-js/server dev\" \"pnpm --filter @squid-js/client dev\"",
+    "clean": "rimraf target packages/squid-js/wasm packages/squid-js/dist apps/server/dist apps/server/native apps/client/dist"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.6.3"
+  },
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=20"
+  }
+}

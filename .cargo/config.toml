@@ -1,0 +1,7 @@
+# wasm-ld defaults to a 1 MiB stack. Poulpy's keygen + key-prepare paths can
+# blow that under Params::unsecure(), so we bump it to 16 MiB. wasm memory
+# itself auto-grows, so no other limits are needed here.
+[target.wasm32-unknown-unknown]
+rustflags = [
+    "-C", "link-arg=-zstack-size=16777216",
+]

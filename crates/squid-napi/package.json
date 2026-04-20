@@ -1,0 +1,29 @@
+{
+  "name": "@squid-js/napi",
+  "version": "0.1.0",
+  "private": true,
+  "description": "napi-rs native addon wrapping cedoor/squid for server use.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "*.node"
+  ],
+  "napi": {
+    "name": "squid-napi",
+    "triples": {
+      "defaults": true
+    }
+  },
+  "scripts": {
+    "build": "napi build --platform --release --js index.js --dts index.d.ts",
+    "build:debug": "napi build --platform --js index.js --dts index.d.ts"
+  },
+  "devDependencies": {
+    "@napi-rs/cli": "^2.18.4"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
