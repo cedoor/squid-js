@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
-// Keygen blocks the main thread until done; with `Params::test()` this is
-// usually a few seconds locally—timeouts are a ceiling for cold CI / slow runners.
+// Keygen runs in a wasm worker; duration depends on the chosen `paramsSet`
+// (demo default `test`). Allow extra time for cold CI / slow runners.
 const KEYGEN_TIMEOUT_MS = 30_000;
 const COMPUTE_TIMEOUT_MS = 15_000;
 

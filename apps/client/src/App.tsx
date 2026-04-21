@@ -78,8 +78,8 @@ export function App() {
     setStatus({ kind: "computing" });
     setResult(null);
     try {
-      const ctA = client.encryptU32(aN);
-      const ctB = client.encryptU32(bN);
+      const ctA = await client.encryptU32(aN);
+      const ctB = await client.encryptU32(bN);
       setLastCtSize(ctA.byteLength);
       const resp = await fetch(`${SERVER_URL}/session/${sessionId}/add`, {
         method: "POST",
@@ -91,7 +91,7 @@ export function App() {
         throw new Error(body.error ?? `/add failed (${resp.status})`);
       }
       const resultBytes = new Uint8Array(await resp.arrayBuffer());
-      const decrypted = client.decryptU32(resultBytes);
+      const decrypted = await client.decryptU32(resultBytes);
       setResult(decrypted);
       setStatus({ kind: "ready" });
     } catch (err) {

@@ -15,7 +15,7 @@ poulpy-js/
 │  └─ criterion-shim/          # no-op `criterion` replacement; see below
 ├─ packages/
 │  └─ poulpy-js/               # dual entry point:
-│                              #   `poulpy-js/client` (browser, wasm-backed PoulpyClient)
+│                              #   `poulpy-js/client` (browser, wasm worker + PoulpyClient)
 │                              #   `poulpy-js/server` (Node, napi-backed Evaluator)
 └─ apps/
    ├─ client/                  # Vite + React demo
@@ -46,10 +46,10 @@ GitHub Actions (`.github/workflows/e2e.yml`) runs `pnpm install`, `pnpm build`, 
 
 ## How it works
 
-1. **Browser.** `PoulpyClient.create()` initializes the wasm module, calls `Session::new_random` (which forwards to `squid::Context::keygen_with_seeds` under `Params::test()`), and exposes `evaluationKey`, `encryptU32`, `decryptU32`, and `exportSeeds`.
+1. **Browser.** `PoulpyClient.create({ paramsSet })` spins up a module worker that loads wasm and calls `Session::new_random(paramsSet)`. Squid resolves the name with `Params::by_name` (e.g. `"test"` or `"unsecure"`), then `Context::keygen_with_seeds` runs under that parameter set. The client exposes `evaluationKey` plus async `encryptU32`, `decryptU32`, and `exportSeeds` (all in the worker). The same `paramsSet` must be used on the server (`POULPY_PARAMS_SET` in the demo).
 2. **Client → server handshake.** The browser POSTs raw evaluation-key bytes (`Content-Type: application/octet-stream`) to `POST /session`. The server deserializes into a `poulpy_napi::Evaluator` and stores it in an in-memory `Map` keyed by a UUID.
 3. **Compute.** The browser POSTs packed ciphertext bytes to `POST /session/:id/add`. The server deserializes both, runs homomorphic add, and returns the serialized result ciphertext.
-4. **Decrypt.** Browser calls `client.decryptU32(result)`; secret-key material never leaves the page.
+4. **Decrypt.** Browser `await`s `client.decryptU32(result)`; secret-key material never leaves the worker/page.
 
 ## Why `crates/criterion-shim`?
 
@@ -61,6 +61,6 @@ When upstream Poulpy moves criterion to `[dev-dependencies]`, delete the shim an
 
 ## Known constraints
 
-- `Params::test()` — same layout bundle as Poulpy’s `bdd_arithmetic` **test_suite** (smaller and faster than the `bdd_arithmetic` example / `Params::unsecure()`). Not a vetted production security level.
+- **Parameter sets** — `paramsSet` is a Squid name (currently `"test"` or `"unsecure"`). The demo defaults to `"test"`; that set uses the same layout bundle as Poulpy’s `bdd_arithmetic` **test_suite** and is smaller/faster than `"unsecure"`. Neither is a vetted production security level.
 - Sessions are in-memory and unauthenticated (single-process demo only).
-- Keygen runs synchronously in the browser wasm until it finishes; the demo UI stays on “Booting wasm…” during that time.
+- Keygen runs in the wasm worker until it finishes; the demo UI stays on “Booting wasm…” until the worker reports ready (the main thread stays responsive).
