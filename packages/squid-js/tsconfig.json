@@ -12,10 +12,10 @@
     "outDir": "dist",
     "rootDir": "src",
     "lib": ["ES2022", "DOM"],
+    "types": ["node"],
     "allowJs": false,
-    "resolveJsonModule": true,
-    "types": []
+    "resolveJsonModule": true
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["dist", "wasm", "node_modules"]
+  "exclude": ["dist", "wasm", "napi", "node_modules"]
 }

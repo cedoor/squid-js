@@ -2,7 +2,7 @@ import { defineConfig } from "@playwright/test";
 
 // The demo needs both server (3001) and client (5173) running. The root
 // `pnpm dev` script starts both concurrently; reuseExistingServer lets a
-// developer keep `pnpm dev` open and just run `pnpm test:e2e` on the side.
+// developer keep `pnpm dev` open and just run `pnpm test` on the side.
 export default defineConfig({
   testDir: "./tests",
   timeout: 120_000,

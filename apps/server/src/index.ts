@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import cors from "cors";
 import express, { type Request, type Response } from "express";
-import { Evaluator } from "@squid-js/napi";
+import { Evaluator } from "squid-js/server";
 
 const PORT = Number(process.env.PORT ?? 3001);
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN ?? "http://localhost:5173";

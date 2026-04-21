@@ -14,7 +14,9 @@ squid-js/
 │  ├─ squid-napi/              # napi-rs bindings (Node server)
 │  └─ criterion-shim/          # no-op `criterion` replacement; see below
 ├─ packages/
-│  └─ squid-js/                # TS wrapper: SquidClient API over wasm
+│  └─ squid-js/                # dual entry point:
+│                              #   `squid-js/client` (browser, wasm-backed SquidClient)
+│                              #   `squid-js/server` (Node, napi-backed Evaluator)
 └─ apps/
    ├─ client/                  # Vite + React demo
    ├─ server/                  # Node + Express demo
@@ -31,16 +33,16 @@ squid-js/
 
 ```sh
 pnpm install
-pnpm build          # build:wasm → build:napi → build:js → build:server → build:client
+pnpm build          # build:squid (wasm + napi + ts) → build:server → build:client
 pnpm dev            # server on :3001, client on :5173
-pnpm test:e2e       # Playwright: installs Chromium (pretest), runs demo flow
+pnpm test           # Playwright: installs Chromium (pretest), runs demo flow
 ```
 
-Individual steps are also available (`pnpm build:wasm`, `pnpm build:napi`, …).
+Individual steps are also available (`pnpm build:squid`, `pnpm build:server`, `pnpm build:client`). `build:squid` compiles the wasm crate via `wasm-pack`, the napi crate via `@napi-rs/cli`, and the TS wrappers via `tsc` — all into `packages/squid-js/`.
 
 ### CI
 
-GitHub Actions (`.github/workflows/e2e.yml`) runs `pnpm install`, `pnpm build`, and `pnpm test:e2e` on pushes and pull requests to `main` / `master`.
+GitHub Actions (`.github/workflows/e2e.yml`) runs `pnpm install`, `pnpm build`, and `pnpm test` on pushes and pull requests to `main` / `master`.
 
 ## How it works
 

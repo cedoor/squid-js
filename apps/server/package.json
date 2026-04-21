@@ -11,7 +11,7 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@squid-js/napi": "workspace:*",
+    "squid-js": "workspace:*",
     "cors": "^2.8.5",
     "express": "^4.21.1"
   },

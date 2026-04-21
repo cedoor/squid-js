@@ -13,7 +13,7 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    exclude: ["@squid-js/core"],
+    exclude: ["squid-js"],
   },
   build: {
     target: "es2022",

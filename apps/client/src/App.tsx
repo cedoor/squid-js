@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { SquidClient } from "@squid-js/core";
+import { SquidClient } from "squid-js/client";
 
 const SERVER_URL = (import.meta.env.VITE_SERVER_URL as string | undefined) ?? "http://localhost:3001";
 const OCTET_STREAM = "application/octet-stream";
