@@ -2,7 +2,7 @@ name: E2E
 
 on:
   push:
-    branches: [main, master]
+    branches: [main]
   pull_request:
 
 concurrency:
@@ -12,7 +12,7 @@ concurrency:
 jobs:
   e2e:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
@@ -24,8 +24,9 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - uses: dtolnay/rust-toolchain@nightly
+      - uses: dtolnay/rust-toolchain@master
         with:
+          toolchain: nightly
           targets: wasm32-unknown-unknown
 
       - uses: Swatinem/rust-cache@v2
@@ -36,6 +37,12 @@ jobs:
 
       - name: Install JS dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Build wasm, napi, and JS packages
         run: pnpm run build
