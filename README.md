@@ -1,22 +1,22 @@
-# squid-js
+# Poulpy JS
 
-Browser-usable FHE over [cedoor/squid](https://github.com/cedoor/squid) (an ergonomic Rust wrapper around Poulpy), packaged as a pnpm + Cargo monorepo with a client/server demo.
+Browser-usable FHE over [Squid](https://github.com/cedoor/squid) (an ergonomic Rust wrapper around Poulpy), packaged as a pnpm + Cargo monorepo with a client/server demo.
 
 The browser generates its own `(secret_key, evaluation_key)` pair, ships only the evaluation key and ciphertexts to the server, and decrypts results locally. The server never sees plaintexts and never holds secret-key material.
 
 ```
-squid-js/
+poulpy-js/
 ├─ Cargo.toml                  # Rust workspace
 ├─ pnpm-workspace.yaml
 ├─ package.json                # root scripts
 ├─ crates/
-│  ├─ squid-wasm/              # wasm-bindgen bindings (browser)
-│  ├─ squid-napi/              # napi-rs bindings (Node server)
+│  ├─ poulpy-wasm/             # wasm-bindgen bindings (browser)
+│  ├─ poulpy-napi/             # napi-rs bindings (Node server)
 │  └─ criterion-shim/          # no-op `criterion` replacement; see below
 ├─ packages/
-│  └─ squid-js/                # dual entry point:
-│                              #   `squid-js/client` (browser, wasm-backed SquidClient)
-│                              #   `squid-js/server` (Node, napi-backed Evaluator)
+│  └─ poulpy-js/               # dual entry point:
+│                              #   `poulpy-js/client` (browser, wasm-backed PoulpyClient)
+│                              #   `poulpy-js/server` (Node, napi-backed Evaluator)
 └─ apps/
    ├─ client/                  # Vite + React demo
    ├─ server/                  # Node + Express demo
@@ -33,12 +33,12 @@ squid-js/
 
 ```sh
 pnpm install
-pnpm build          # build:squid (wasm + napi + ts) → build:server → build:client
+pnpm build          # build:poulpy (wasm + napi + ts) → build:server → build:client
 pnpm dev            # server on :3001, client on :5173
 pnpm test           # Playwright: installs Chromium (pretest), runs demo flow
 ```
 
-Individual steps are also available (`pnpm build:squid`, `pnpm build:server`, `pnpm build:client`). `build:squid` compiles the wasm crate via `wasm-pack`, the napi crate via `@napi-rs/cli`, and the TS wrappers via `tsc` — all into `packages/squid-js/`.
+Individual steps are also available (`pnpm build:poulpy`, `pnpm build:server`, `pnpm build:client`). `build:poulpy` compiles the wasm crate via `wasm-pack`, the napi crate via `@napi-rs/cli`, and the TS wrappers via `tsc` — all into `packages/poulpy-js/`.
 
 ### CI
 
@@ -46,8 +46,8 @@ GitHub Actions (`.github/workflows/e2e.yml`) runs `pnpm install`, `pnpm build`, 
 
 ## How it works
 
-1. **Browser.** `SquidClient.create()` initializes the wasm module, calls `Session::new_random` (which forwards to `squid::Context::keygen_with_seeds` under `Params::test()`), and exposes `evaluationKey`, `encryptU32`, `decryptU32`, and `exportSeeds`.
-2. **Client → server handshake.** The browser POSTs raw evaluation-key bytes (`Content-Type: application/octet-stream`) to `POST /session`. The server deserializes into a `squid_napi::Evaluator` and stores it in an in-memory `Map` keyed by a UUID.
+1. **Browser.** `PoulpyClient.create()` initializes the wasm module, calls `Session::new_random` (which forwards to `squid::Context::keygen_with_seeds` under `Params::test()`), and exposes `evaluationKey`, `encryptU32`, `decryptU32`, and `exportSeeds`.
+2. **Client → server handshake.** The browser POSTs raw evaluation-key bytes (`Content-Type: application/octet-stream`) to `POST /session`. The server deserializes into a `poulpy_napi::Evaluator` and stores it in an in-memory `Map` keyed by a UUID.
 3. **Compute.** The browser POSTs packed ciphertext bytes to `POST /session/:id/add`. The server deserializes both, runs homomorphic add, and returns the serialized result ciphertext.
 4. **Decrypt.** Browser calls `client.decryptU32(result)`; secret-key material never leaves the page.
 

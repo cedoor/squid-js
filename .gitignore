@@ -3,8 +3,8 @@ node_modules/
 dist/
 pkg/
 *.node
-packages/squid-js/wasm/
-packages/squid-js/napi/
+packages/poulpy-js/wasm/
+packages/poulpy-js/napi/
 apps/server/native/
 apps/client/dist/
 apps/e2e/playwright-report/

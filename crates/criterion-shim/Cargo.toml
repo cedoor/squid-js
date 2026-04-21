@@ -8,7 +8,7 @@ name = "criterion"
 version = "0.8.2"
 edition = "2021"
 license = "MIT OR Apache-2.0"
-description = "No-op criterion shim used by the squid-js workspace to build Poulpy for wasm32."
+description = "No-op criterion shim used by the poulpy-js workspace to build Poulpy for wasm32."
 publish = false
 
 [lib]

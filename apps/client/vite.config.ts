@@ -13,7 +13,7 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    exclude: ["squid-js"],
+    exclude: ["poulpy-js"],
   },
   build: {
     target: "es2022",

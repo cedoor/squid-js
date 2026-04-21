@@ -1,16 +1,16 @@
 {
-  "name": "squid-js-monorepo",
+  "name": "poulpy-js-monorepo",
   "version": "0.1.0",
   "private": true,
-  "description": "Browser-usable FHE via cedoor/squid: wasm bindings, Node bindings, and a client/server demo.",
+  "description": "Browser-usable FHE via Squid: wasm bindings, Node bindings, and a client/server demo.",
   "scripts": {
-    "build:squid": "pnpm --filter squid-js build",
-    "build:server": "pnpm --filter @squid-js/server build",
-    "build:client": "pnpm --filter @squid-js/client build",
-    "build": "pnpm run build:squid && pnpm run build:server && pnpm run build:client",
-    "dev": "concurrently -n server,client -c blue,green \"pnpm --filter @squid-js/server dev\" \"pnpm --filter @squid-js/client dev\"",
-    "test": "pnpm --filter @squid-js/e2e test",
-    "clean": "rimraf target packages/squid-js/wasm packages/squid-js/napi packages/squid-js/dist apps/server/dist apps/client/dist"
+    "build:poulpy": "pnpm --filter poulpy-js build",
+    "build:server": "pnpm --filter @poulpy-js/server build",
+    "build:client": "pnpm --filter @poulpy-js/client build",
+    "build": "pnpm run build:poulpy && pnpm run build:server && pnpm run build:client",
+    "dev": "concurrently -n server,client -c blue,green \"pnpm --filter @poulpy-js/server dev\" \"pnpm --filter @poulpy-js/client dev\"",
+    "test": "pnpm --filter @poulpy-js/e2e test",
+    "clean": "rimraf target packages/poulpy-js/wasm packages/poulpy-js/napi packages/poulpy-js/dist apps/server/dist apps/client/dist"
   },
   "devDependencies": {
     "concurrently": "^9.0.1",

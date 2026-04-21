@@ -1,4 +1,4 @@
-import initWasm, { Session } from "../wasm/squid_wasm.js";
+import initWasm, { Session } from "../wasm/poulpy_wasm.js";
 
 let initPromise: Promise<void> | null = null;
 
@@ -27,7 +27,7 @@ export interface CreateOptions {
  * this object; only the evaluation key bytes and per-value ciphertexts
  * cross process/network boundaries.
  */
-export class SquidClient {
+export class PoulpyClient {
   readonly evaluationKey: Uint8Array;
   private readonly session: Session;
 
@@ -36,13 +36,13 @@ export class SquidClient {
     this.evaluationKey = ek;
   }
 
-  static async create(opts: CreateOptions = {}): Promise<SquidClient> {
+  static async create(opts: CreateOptions = {}): Promise<PoulpyClient> {
     await init();
     const session = opts.seeds
       ? Session.fromSeeds(opts.seeds)
       : Session.newRandom();
     const ek = session.evaluationKeyBytes();
-    return new SquidClient(session, ek);
+    return new PoulpyClient(session, ek);
   }
 
   encryptU32(value: number): Uint8Array {

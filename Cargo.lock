@@ -467,6 +467,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "poulpy-napi"
+version = "0.1.0"
+dependencies = [
+ "napi",
+ "napi-build",
+ "napi-derive",
+ "squid",
+]
+
+[[package]]
 name = "poulpy-schemes"
 version = "0.5.0"
 source = "git+https://github.com/poulpy-fhe/poulpy.git?rev=067fd785a1d9087f7d9fa437a8503a2d74ac737f#067fd785a1d9087f7d9fa437a8503a2d74ac737f"
@@ -480,6 +490,18 @@ dependencies = [
  "poulpy-cpu-ref",
  "poulpy-hal",
  "rand",
+]
+
+[[package]]
+name = "poulpy-wasm"
+version = "0.1.0"
+dependencies = [
+ "console_error_panic_hook",
+ "getrandom 0.3.4",
+ "getrandom 0.4.2",
+ "js-sys",
+ "squid",
+ "wasm-bindgen",
 ]
 
 [[package]]
@@ -667,28 +689,6 @@ dependencies = [
  "poulpy-cpu-ref",
  "poulpy-hal",
  "poulpy-schemes",
-]
-
-[[package]]
-name = "squid-napi"
-version = "0.1.0"
-dependencies = [
- "napi",
- "napi-build",
- "napi-derive",
- "squid",
-]
-
-[[package]]
-name = "squid-wasm"
-version = "0.1.0"
-dependencies = [
- "console_error_panic_hook",
- "getrandom 0.3.4",
- "getrandom 0.4.2",
- "js-sys",
- "squid",
- "wasm-bindgen",
 ]
 
 [[package]]

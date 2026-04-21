@@ -1,8 +1,8 @@
 [workspace]
 resolver = "2"
 members = [
-    "crates/squid-wasm",
-    "crates/squid-napi",
+    "crates/poulpy-wasm",
+    "crates/poulpy-napi",
     "crates/criterion-shim",
 ]
 
@@ -10,7 +10,7 @@ members = [
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
-authors = ["squid-js contributors"]
+authors = ["poulpy-js contributors"]
 
 [workspace.dependencies]
 squid = { git = "https://github.com/cedoor/squid.git", default-features = false }

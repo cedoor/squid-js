@@ -1,7 +1,7 @@
 {
-  "name": "squid-js",
+  "name": "poulpy-js",
   "version": "0.1.0",
-  "description": "Browser FHE client and Node evaluator over Squid. `squid-js/client` uses wasm; `squid-js/server` uses a napi-rs native addon.",
+  "description": "Browser FHE client and Node evaluator over Squid. `poulpy-js/client` uses wasm; `poulpy-js/server` uses a napi-rs native addon.",
   "type": "module",
   "exports": {
     "./client": {
@@ -22,14 +22,14 @@
     "src"
   ],
   "napi": {
-    "name": "squid",
+    "name": "poulpy",
     "triples": {
       "defaults": true
     }
   },
   "scripts": {
-    "build:wasm": "wasm-pack build ../../crates/squid-wasm --target web --out-dir ../../packages/squid-js/wasm --out-name squid_wasm",
-    "build:napi": "napi build --cargo-cwd ../../crates/squid-napi --platform --release --js index.js --dts index.d.ts napi && node -e \"require('fs').writeFileSync('napi/package.json', '{\\\"type\\\":\\\"commonjs\\\"}\\n')\"",
+    "build:wasm": "wasm-pack build ../../crates/poulpy-wasm --target web --out-dir ../../packages/poulpy-js/wasm --out-name poulpy_wasm",
+    "build:napi": "napi build --cargo-cwd ../../crates/poulpy-napi --platform --release --js index.js --dts index.d.ts napi && node -e \"require('fs').writeFileSync('napi/package.json', '{\\\"type\\\":\\\"commonjs\\\"}\\n')\"",
     "build:ts": "tsc -p tsconfig.json",
     "build": "pnpm run build:wasm && pnpm run build:napi && pnpm run build:ts",
     "dev": "tsc -p tsconfig.json --watch"

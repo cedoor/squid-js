@@ -1,8 +1,8 @@
 {
-  "name": "@squid-js/server",
+  "name": "@poulpy-js/server",
   "version": "0.1.0",
   "private": true,
-  "description": "Demo server: runs FHE evaluation via the squid-napi addon.",
+  "description": "Demo server: runs FHE evaluation via the poulpy-js native addon.",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "squid-js": "workspace:*",
+    "poulpy-js": "workspace:*",
     "cors": "^2.8.5",
     "express": "^4.21.1"
   },

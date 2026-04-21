@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import cors from "cors";
 import express, { type Request, type Response } from "express";
-import { Evaluator } from "squid-js/server";
+import { Evaluator } from "poulpy-js/server";
 
 const PORT = Number(process.env.PORT ?? 3001);
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN ?? "http://localhost:5173";
@@ -72,6 +72,6 @@ app.delete("/session/:id", (req: Request, res: Response) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`[squid-js server] listening on http://localhost:${PORT}`);
-  console.log(`[squid-js server] accepting CORS from ${CLIENT_ORIGIN}`);
+  console.log(`[poulpy-js server] listening on http://localhost:${PORT}`);
+  console.log(`[poulpy-js server] accepting CORS from ${CLIENT_ORIGIN}`);
 });

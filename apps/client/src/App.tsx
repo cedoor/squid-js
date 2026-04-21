@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { SquidClient } from "squid-js/client";
+import { PoulpyClient } from "poulpy-js/client";
 
 const SERVER_URL = (import.meta.env.VITE_SERVER_URL as string | undefined) ?? "http://localhost:3001";
 const OCTET_STREAM = "application/octet-stream";
@@ -28,7 +28,7 @@ function packCiphertexts(a: Uint8Array, b: Uint8Array): Uint8Array {
 }
 
 export function App() {
-  const [client, setClient] = useState<SquidClient | null>(null);
+  const [client, setClient] = useState<PoulpyClient | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [status, setStatus] = useState<Status>({ kind: "booting" });
   const [a, setA] = useState("17");
@@ -40,7 +40,7 @@ export function App() {
     let cancelled = false;
     (async () => {
       try {
-        const c = await SquidClient.create();
+        const c = await PoulpyClient.create();
         if (cancelled) return;
         const resp = await fetch(`${SERVER_URL}/session`, {
           method: "POST",
@@ -103,7 +103,7 @@ export function App() {
   return (
     <main>
       <header>
-        <h1>squid-js FHE demo</h1>
+        <h1>poulpy-js FHE demo</h1>
         <p className="muted">
           Browser generates keys, encrypts inputs, ships ciphertext to the server. The server
           never sees plaintexts and cannot decrypt the result.

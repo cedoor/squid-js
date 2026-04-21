@@ -1,8 +1,8 @@
 {
-  "name": "@squid-js/e2e",
+  "name": "@poulpy-js/e2e",
   "version": "0.1.0",
   "private": true,
-  "description": "End-to-end tests for the squid-js client/server demo.",
+  "description": "End-to-end tests for the poulpy-js client/server demo.",
   "type": "module",
   "scripts": {
     "pretest": "playwright install chromium",
