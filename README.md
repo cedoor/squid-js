@@ -1,3 +1,5 @@
+**This repo has been merge into https://github.com/cedoor/squid**
+
 # 🐙 Poulpy JS
 
 <p align="center">
