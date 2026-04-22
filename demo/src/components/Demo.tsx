@@ -56,10 +56,10 @@ export default function Demo() {
   }, [doEncrypt, a, b])
 
   const handleEvaluate = useCallback(() => {
-    if (ctA && ctB && sessionId && ekBytes) {
-      doEvaluate(ctA, ctB, sessionId, ekBytes)
+    if (ctA && ctB && sessionId) {
+      doEvaluate(ctA, ctB, sessionId)
     }
-  }, [doEvaluate, ctA, ctB, sessionId, ekBytes])
+  }, [doEvaluate, ctA, ctB, sessionId])
 
   const handleDecrypt = useCallback(() => {
     if (ctSum) doDecrypt(ctSum)
@@ -182,7 +182,6 @@ export default function Demo() {
             onEncrypt={handleEncrypt}
           />
           <Step3Evaluate
-            ekBytes={ekBytes}
             ctA={ctA}
             ctB={ctB}
             ctSum={ctSum}

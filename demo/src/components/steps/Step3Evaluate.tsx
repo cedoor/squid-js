@@ -9,7 +9,6 @@ import { formatBytes } from '@/lib/pack'
 import type { Phase } from '@/lib/fhe-types'
 
 interface Step3EvaluateProps {
-  ekBytes: Uint8Array | null
   ctA: Uint8Array | null
   ctB: Uint8Array | null
   ctSum: Uint8Array | null
@@ -54,9 +53,9 @@ function PayloadRow({
   )
 }
 
-export function Step3Evaluate({ ekBytes, ctA, ctB, ctSum, phase, onEvaluate }: Step3EvaluateProps) {
+export function Step3Evaluate({ ctA, ctB, ctSum, phase, onEvaluate }: Step3EvaluateProps) {
   const busy = phase !== 'idle'
-  const ready = !!ctA && !!ctB && !!ekBytes
+  const ready = !!ctA && !!ctB
   const sending = phase === 'sending' || phase === 'evaluating'
   const done = !!ctSum
 
@@ -64,8 +63,8 @@ export function Step3Evaluate({ ekBytes, ctA, ctB, ctSum, phase, onEvaluate }: S
     <Card accent="var(--cipher)">
       <StepHeader
         n="3"
-        title="Ship to server, add homomorphically"
-        subtitle="The server receives ek, ctₐ, ct_b. It never sees your secret key or the values."
+        title="Send ciphertexts, add homomorphically"
+        subtitle="Client sends only ctₐ and ct_b — the server already holds the EK. It never sees the plaintext values."
         accent="var(--cipher)"
         done={done}
       />
@@ -102,17 +101,6 @@ export function Step3Evaluate({ ekBytes, ctA, ctB, ctSum, phase, onEvaluate }: S
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
             <PayloadRow
-              icon={
-                <svg width="14" height="14" viewBox="0 0 18 18">
-                  <circle cx="6" cy="9" r="3.5" fill="none" stroke="oklch(0.35 0.12 290)" strokeWidth="1.5" />
-                  <path d="M 9.5 9 L 16 9 M 14 9 L 14 12 M 12 9 L 12 11.5" stroke="oklch(0.35 0.12 290)" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-                </svg>
-              }
-              label="ek"
-              value={ekBytes ? formatBytes(ekBytes.byteLength) : '—'}
-              tone="key"
-            />
-            <PayloadRow
               icon={ctA ? <Fingerprint bytes={ctA} size={14} /> : null}
               label="ctₐ"
               value={ctA ? formatBytes(ctA.byteLength) : '—'}
@@ -124,6 +112,24 @@ export function Step3Evaluate({ ekBytes, ctA, ctB, ctSum, phase, onEvaluate }: S
               value={ctB ? formatBytes(ctB.byteLength) : '—'}
               tone="cipher"
             />
+          </div>
+          {/* EK note */}
+          <div
+            style={{
+              marginTop: 8,
+              fontSize: 10.5,
+              color: 'var(--ink-faint)',
+              fontFamily: 'var(--font-mono)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 5,
+            }}
+          >
+            <svg width="11" height="11" viewBox="0 0 18 18">
+              <circle cx="6" cy="9" r="3.5" fill="none" stroke="currentColor" strokeWidth="1.5" />
+              <path d="M 9.5 9 L 16 9 M 14 9 L 14 12 M 12 9 L 12 11.5" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+            </svg>
+            ek pre-loaded on server · not sent
           </div>
         </div>
 

@@ -8,6 +8,7 @@ packages/poulpy-js/napi/
 apps/server/native/
 demo/dist/
 demo/.next/
+demo/data/*.bin
 tests/playwright-report/
 tests/test-results/
 .DS_Store

@@ -4,16 +4,19 @@
   "private": true,
   "description": "Playful Next.js FHE demo — keygen, encrypt, evaluate, decrypt with poulpy-js.",
   "scripts": {
+    "predev": "node scripts/ensure-demo-ek.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/generate-demo-ek.mjs",
+    "gen-demo-ek": "node scripts/generate-demo-ek.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "next": "^15.3.1",
+    "poulpy-js": "^0.1.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "poulpy-js": "^0.1.2"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@types/node": "^22",

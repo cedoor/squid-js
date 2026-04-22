@@ -25,7 +25,7 @@ importers:
         version: 15.5.15(@playwright/test@1.59.1)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       poulpy-js:
         specifier: ^0.1.2
-        version: link:../packages/poulpy-js
+        version: 0.1.2
       react:
         specifier: ^19.0.0
         version: 19.2.5
@@ -423,6 +423,10 @@ packages:
     resolution: {integrity: sha512-PS08Iboia9mts/2ygV3eLpY5ghnUcfLV/EXTOW1E2qYxJKGGBUtNjN76FYHnMs36RmARn41bC0AZmn+rR0OVpQ==}
     engines: {node: ^10 || ^12 || >=14}
 
+  poulpy-js@0.1.2:
+    resolution: {integrity: sha512-LTd4C7eo0NIyWYFPlPGAC3Mmu4ELWEUEW/cdZ1GetbEfotYilmOudn/K/Mcgn/PJkF+NVtpgIQJUbX+2C9wH5w==}
+    engines: {node: '>=20'}
+
   react-dom@19.2.5:
     resolution: {integrity: sha512-J5bAZz+DXMMwW/wV3xzKke59Af6CHY7G4uYLN1OvBcKEsWOs4pQExj86BBKamxl/Ik5bx9whOrvBlSDfWzgSag==}
     peerDependencies:
@@ -798,6 +802,8 @@ snapshots:
       nanoid: 3.3.11
       picocolors: 1.1.1
       source-map-js: 1.2.1
+
+  poulpy-js@0.1.2: {}
 
   react-dom@19.2.5(react@19.2.5):
     dependencies:

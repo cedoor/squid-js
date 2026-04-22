@@ -17,8 +17,8 @@ test("browser keygen → server FHE add → browser decrypt", async ({ page }) =
 
   await page.goto("/");
 
-  // Step 1 — generate keys (WASM keygen in worker, may take a while)
-  await page.getByRole("button", { name: /Generate keys/i }).click();
+  // Step 1 — derive keys from demo seed (WASM keygen in worker, may take a while)
+  await page.getByRole("button", { name: /Derive keys/i }).click();
   await expect(
     page.getByRole("button", { name: /Encrypt a & b/i }),
   ).toBeEnabled({ timeout: KEYGEN_TIMEOUT_MS });

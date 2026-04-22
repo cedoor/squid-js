@@ -2,14 +2,13 @@
 
 import { useCallback, useEffect, useReducer, useRef } from 'react'
 import type { FheState, LogEntry, LogKind, Phase } from '@/lib/fhe-types'
+import { DEMO_KEY_SEED } from '@/lib/demo-seed'
 import { formatBytes, packCiphertexts } from '@/lib/pack'
 
 const API_BASE = '/api'
 const PARAMS_SET =
   (process.env.NEXT_PUBLIC_POULPY_PARAMS_SET as string | undefined) ?? 'test'
 const OCTET = 'application/octet-stream'
-/** Vercel (and most serverless) cap ~4.5 MiB per request; EK is often much larger. */
-const EK_UPLOAD_CHUNK = 3 * 1024 * 1024
 
 // ---------------------------------------------------------------------------
 // Reducer
@@ -102,11 +101,11 @@ export function useFhe() {
     dispatch({ type: 'SET_PHASE', phase: 'keygen' })
     startRef.current = Date.now()
     logIdRef.current = 0
-    log('info', 'client: generating CGGI keypair…')
+    log('info', 'client: building CGGI session from demo seed (deterministic)…')
     log('dim', `  scheme=CGGI  paramsSet=${PARAMS_SET}`)
     try {
       const { PoulpyClient } = await import('poulpy-js/client')
-      const client = await PoulpyClient.create({ paramsSet: PARAMS_SET })
+      const client = await PoulpyClient.create({ paramsSet: PARAMS_SET, seeds: DEMO_KEY_SEED })
       clientRef.current = client
 
       const seeds = await client.exportSeeds()
@@ -114,48 +113,13 @@ export function useFhe() {
       const ekBytes = client.evaluationKey
 
       log('ok', `client: sk ready (${formatBytes(seeds.byteLength)}) — stays local`)
-      log('info', `client: uploading ek (${formatBytes(ekBytes.byteLength)}) to server…`)
+      log('info', 'client: registering server session (eval key matches this seed, shipped with the app)…')
 
-      const { sessionId } = await (async () => {
-        if (ekBytes.byteLength <= EK_UPLOAD_CHUNK) {
-          const resp = await fetch(`${API_BASE}/session`, {
-            method: 'POST',
-            headers: { 'Content-Type': OCTET },
-            body: ekBytes as BodyInit,
-          })
-          if (!resp.ok) throw new Error(`session upload failed (${resp.status})`)
-          return (await resp.json()) as { sessionId: string }
-        }
-        const uploadId = crypto.randomUUID()
-        const n = Math.ceil(ekBytes.byteLength / EK_UPLOAD_CHUNK)
-        log('dim', `  (chunked: ${n}×${formatBytes(EK_UPLOAD_CHUNK)} max; serverless body limit)`)
-        for (let i = 0; i < n; i++) {
-          const start = i * EK_UPLOAD_CHUNK
-          const chunk = ekBytes.subarray(
-            start,
-            start + Math.min(EK_UPLOAD_CHUNK, ekBytes.byteLength - start),
-          )
-          const resp = await fetch(`${API_BASE}/session`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': OCTET,
-              'X-Upload-Id': uploadId,
-              'X-Chunk-Index': String(i),
-              'X-Total-Chunks': String(n),
-            },
-            body: chunk as BodyInit,
-          })
-          if (i < n - 1) {
-            if (resp.status !== 202) throw new Error(`session upload failed (${resp.status})`)
-          } else {
-            if (!resp.ok) throw new Error(`session upload failed (${resp.status})`)
-            return (await resp.json()) as { sessionId: string }
-          }
-        }
-        throw new Error('session upload: internal chunk loop')
-      })()
+      const resp = await fetch(`${API_BASE}/session`, { method: 'POST' })
+      if (!resp.ok) throw new Error(`session register failed (${resp.status})`)
+      const { sessionId } = (await resp.json()) as { sessionId: string }
 
-      log('ok', `client: ek uploaded · sessionId=${sessionId.slice(0, 8)}…`)
+      log('ok', `client: server session id=${sessionId.slice(0, 8)}…`)
       log('dim', 'server: waiting for ciphertexts…')
 
       dispatch({ type: 'KEYGEN_DONE', skPreview, ekBytes, sessionId })
@@ -187,9 +151,9 @@ export function useFhe() {
   )
 
   const doEvaluate = useCallback(
-    async (ctA: Uint8Array, ctB: Uint8Array, sessionId: string, ekBytes: Uint8Array) => {
+    async (ctA: Uint8Array, ctB: Uint8Array, sessionId: string) => {
       dispatch({ type: 'SET_PHASE', phase: 'sending' })
-      const payloadSize = formatBytes(ekBytes.byteLength + ctA.byteLength + ctB.byteLength)
+      const payloadSize = formatBytes(ctA.byteLength + ctB.byteLength)
       log('info', `client → server: POST /session/${sessionId.slice(0, 8)}…/add (${payloadSize})`)
       try {
         const body = packCiphertexts(ctA, ctB)
