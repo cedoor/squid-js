@@ -8,6 +8,8 @@ const API_BASE = '/api'
 const PARAMS_SET =
   (process.env.NEXT_PUBLIC_POULPY_PARAMS_SET as string | undefined) ?? 'test'
 const OCTET = 'application/octet-stream'
+/** Vercel (and most serverless) cap ~4.5 MiB per request; EK is often much larger. */
+const EK_UPLOAD_CHUNK = 3 * 1024 * 1024
 
 // ---------------------------------------------------------------------------
 // Reducer
@@ -114,13 +116,44 @@ export function useFhe() {
       log('ok', `client: sk ready (${formatBytes(seeds.byteLength)}) — stays local`)
       log('info', `client: uploading ek (${formatBytes(ekBytes.byteLength)}) to server…`)
 
-      const resp = await fetch(`${API_BASE}/session`, {
-        method: 'POST',
-        headers: { 'Content-Type': OCTET },
-        body: ekBytes as BodyInit,
-      })
-      if (!resp.ok) throw new Error(`session upload failed (${resp.status})`)
-      const { sessionId } = (await resp.json()) as { sessionId: string }
+      const { sessionId } = await (async () => {
+        if (ekBytes.byteLength <= EK_UPLOAD_CHUNK) {
+          const resp = await fetch(`${API_BASE}/session`, {
+            method: 'POST',
+            headers: { 'Content-Type': OCTET },
+            body: ekBytes as BodyInit,
+          })
+          if (!resp.ok) throw new Error(`session upload failed (${resp.status})`)
+          return (await resp.json()) as { sessionId: string }
+        }
+        const uploadId = crypto.randomUUID()
+        const n = Math.ceil(ekBytes.byteLength / EK_UPLOAD_CHUNK)
+        log('dim', `  (chunked: ${n}×${formatBytes(EK_UPLOAD_CHUNK)} max; serverless body limit)`)
+        for (let i = 0; i < n; i++) {
+          const start = i * EK_UPLOAD_CHUNK
+          const chunk = ekBytes.subarray(
+            start,
+            start + Math.min(EK_UPLOAD_CHUNK, ekBytes.byteLength - start),
+          )
+          const resp = await fetch(`${API_BASE}/session`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': OCTET,
+              'X-Upload-Id': uploadId,
+              'X-Chunk-Index': String(i),
+              'X-Total-Chunks': String(n),
+            },
+            body: chunk as BodyInit,
+          })
+          if (i < n - 1) {
+            if (resp.status !== 202) throw new Error(`session upload failed (${resp.status})`)
+          } else {
+            if (!resp.ok) throw new Error(`session upload failed (${resp.status})`)
+            return (await resp.json()) as { sessionId: string }
+          }
+        }
+        throw new Error('session upload: internal chunk loop')
+      })()
 
       log('ok', `client: ek uploaded · sessionId=${sessionId.slice(0, 8)}…`)
       log('dim', 'server: waiting for ciphertexts…')
