@@ -121,7 +121,7 @@ export function Step2Encrypt({
         done={done}
       />
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+      <div className="demo-card-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
         <EncryptSlot
           label="input a"
           value={a}

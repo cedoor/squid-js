@@ -72,15 +72,11 @@ button {
 }
 
 .demo-github-link {
-  position: fixed;
-  top: 20px;
-  right: 24px;
-  z-index: 20;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 10px;
   color: var(--ink-soft);
   background: oklch(0.98 0.01 80);
@@ -92,4 +88,37 @@ button {
   color: var(--ink);
   background: oklch(0.96 0.02 80);
   border-color: var(--ink-faint);
+}
+
+.demo-root { padding: 28px 32px 40px; }
+.demo-header { flex-direction: row; align-items: center; gap: 18px; }
+.demo-header-title { font-size: 36px; }
+.demo-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(360px, 1fr); gap: 22px; align-items: start; }
+.demo-sidebar { position: sticky; top: 20px; height: calc(100vh - 40px); min-height: 560px; }
+
+@media (max-width: 960px) {
+  .demo-root { padding: 20px 18px 32px; }
+  .demo-grid { grid-template-columns: 1fr; }
+  .demo-sidebar { position: static; height: auto; min-height: 340px; }
+  .demo-header-title { font-size: 30px; }
+}
+
+@media (max-width: 600px) {
+  :root { font-size: 14px; }
+  .demo-root { padding: 16px 14px 28px; gap: 16px !important; }
+  .demo-header { flex-wrap: wrap; gap: 12px !important; padding-bottom: 14px !important; justify-content: space-between !important; align-items: center; }
+  .demo-header-main { flex: 1 1 100% !important; order: 2 !important; }
+  .demo-header-title { font-size: 24px; letter-spacing: -0.3px; }
+  .demo-header-sub { font-size: 13px; }
+  .demo-card-2col { grid-template-columns: 1fr !important; }
+  .demo-send-grid { grid-template-columns: 1fr !important; }
+  .demo-send-arrow { transform: rotate(90deg); margin: 4px auto; }
+  .demo-numpad { grid-template-columns: repeat(8, 1fr) !important; }
+  .demo-decrypt-row { flex-direction: column !important; align-items: flex-start !important; gap: 14px !important; }
+  .demo-decrypt-explain { flex: 0 0 auto !important; min-width: 0 !important; }
+  .demo-decrypt-big { font-size: 56px !important; }
+  .demo-footer { flex-direction: column; align-items: flex-start; gap: 4px !important; }
+  .demo-sidebar { min-height: 280px; }
+  .demo-card { padding: 14px !important; }
+  .demo-card-accent { padding-left: 18px !important; }
 }

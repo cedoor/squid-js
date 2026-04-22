@@ -40,6 +40,7 @@ function GitHubLink() {
 function Footer() {
   return (
     <div
+      className="demo-footer"
       style={{
         marginTop: 4,
         paddingTop: 14,
@@ -95,9 +96,9 @@ export default function Demo() {
 
   return (
     <div
+      className="demo-root"
       style={{
         minHeight: '100vh',
-        padding: '28px 32px 40px',
         maxWidth: 1400,
         margin: '0 auto',
         display: 'flex',
@@ -105,19 +106,17 @@ export default function Demo() {
         gap: 22,
       }}
     >
-      <GitHubLink />
       {/* Header */}
       <header
+        className="demo-header"
         style={{
           display: 'flex',
-          alignItems: 'center',
-          gap: 18,
           paddingBottom: 18,
           borderBottom: '1px solid var(--rule)',
         }}
       >
         <Poulpy size={68} mood={mood} tint="var(--plain)" />
-        <div style={{ flex: 1 }}>
+        <div className="demo-header-main" style={{ flex: 1 }}>
           <div
             style={{
               fontSize: 11,
@@ -130,13 +129,13 @@ export default function Demo() {
             Poulpy · FHE playground
           </div>
           <h1
+            className="demo-header-title"
             style={{
               margin: '4px 0 2px',
               fontFamily: 'var(--font-serif)',
               fontWeight: 500,
-              fontSize: 36,
               letterSpacing: -0.6,
-              lineHeight: 1.05,
+              lineHeight: 1.1,
             }}
           >
             Add two numbers{' '}
@@ -144,6 +143,7 @@ export default function Demo() {
             ever seeing them.
           </h1>
           <div
+            className="demo-header-sub"
             style={{ fontSize: 14, color: 'var(--ink-soft)', marginTop: 4, maxWidth: 780 }}
           >
             An end-to-end walkthrough of a CGGI homomorphic addition — keygen, encrypt, evaluate,
@@ -176,20 +176,16 @@ export default function Demo() {
             </div>
           )}
         </div>
-        <Btn onClick={doReset} small>
-          Reset demo
-        </Btn>
+        <div className="demo-header-actions" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <Btn onClick={doReset} small>
+            Reset demo
+          </Btn>
+          <GitHubLink />
+        </div>
       </header>
 
       {/* Two-column grid */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'minmax(0, 1.35fr) minmax(360px, 1fr)',
-          gap: 22,
-          alignItems: 'start',
-        }}
-      >
+      <div className="demo-grid">
         {/* Left column — steps */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <Step1Keygen
@@ -229,11 +225,8 @@ export default function Demo() {
 
         {/* Right column — server terminal */}
         <div
+          className="demo-sidebar"
           style={{
-            position: 'sticky',
-            top: 20,
-            height: 'calc(100vh - 40px)',
-            minHeight: 560,
             display: 'flex',
             flexDirection: 'column',
             gap: 10,

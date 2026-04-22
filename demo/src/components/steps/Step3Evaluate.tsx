@@ -71,6 +71,7 @@ export function Step3Evaluate({ ctA, ctB, ctSum, phase, onEvaluate }: Step3Evalu
 
       {/* Transit diagram */}
       <div
+        className="demo-send-grid"
         style={{
           display: 'grid',
           gridTemplateColumns: '1fr auto 1fr',
@@ -135,6 +136,7 @@ export function Step3Evaluate({ ctA, ctB, ctSum, phase, onEvaluate }: Step3Evalu
 
         {/* Transit arrow + parcel animation */}
         <div
+          className="demo-send-arrow"
           style={{
             display: 'flex',
             flexDirection: 'column',

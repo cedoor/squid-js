@@ -9,6 +9,7 @@ interface CardProps {
 export function Card({ children, accent, style }: CardProps) {
   return (
     <div
+      className={accent ? 'demo-card demo-card-accent' : 'demo-card'}
       style={{
         background: 'var(--card)',
         border: '1px solid var(--rule)',

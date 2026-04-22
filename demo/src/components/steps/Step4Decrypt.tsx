@@ -30,7 +30,7 @@ export function Step4Decrypt({ ctSum, result, phase, a, b, onDecrypt }: Step4Dec
         done={done}
       />
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
+      <div className="demo-decrypt-row" style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
         {/* The encrypted result */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           {ctSum ? (
@@ -85,6 +85,7 @@ export function Step4Decrypt({ ctSum, result, phase, a, b, onDecrypt }: Step4Dec
 
         {/* Big result number */}
         <div
+          className="demo-decrypt-big"
           data-testid="decrypt-result"
           style={{
             fontFamily: 'var(--font-serif)',
@@ -103,7 +104,7 @@ export function Step4Decrypt({ ctSum, result, phase, a, b, onDecrypt }: Step4Dec
         </div>
 
         {/* Explanation */}
-        <div style={{ fontSize: 12, color: 'var(--ink-soft)', flex: '1 1 240px', minWidth: 220 }}>
+        <div className="demo-decrypt-explain" style={{ fontSize: 12, color: 'var(--ink-soft)', flex: '1 1 240px', minWidth: 220 }}>
           {done ? (
             <>
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--ink)' }}>

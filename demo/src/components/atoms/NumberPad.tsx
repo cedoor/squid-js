@@ -24,6 +24,7 @@ export function NumberPad({ value, onChange, accent = 'var(--plain)', label, dis
         </div>
       )}
       <div
+        className="demo-numpad"
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(8, 1fr)',
