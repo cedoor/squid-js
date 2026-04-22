@@ -1,5 +1,11 @@
 # 🐙 Poulpy JS
 
+<p align="center">
+  <a href="https://squid.cedoor.dev/" target="_blank" rel="noopener noreferrer" title="Poulpy FHE — interactive demo">
+    <img src="https://img.shields.io/badge/▶%20try%20the%20demo-squid.cedoor.dev-0ea5e9?style=for-the-badge" alt="Try the live demo" />
+  </a>
+</p>
+
 [**`poulpy-js`**](https://www.npmjs.com/package/poulpy-js) is a JavaScript library for browser-usable FHE, built on [Poulpy](https://github.com/poulpy-fhe/poulpy) via [Squid](https://github.com/cedoor/squid) (an ergonomic Rust wrapper). It ships a WebAssembly client (`poulpy-js/client`) and a napi-rs Node evaluator (`poulpy-js/server`) — see [packages/poulpy-js/README.md](./packages/poulpy-js/README.md) for install and API docs.
 
 This repo is the Cargo + pnpm monorepo that builds the library, plus a client/server demo showing it end-to-end: the browser generates its own `(secret_key, evaluation_key)` pair, ships only the evaluation key and ciphertexts to the server, and decrypts results locally. The server never sees plaintexts and never holds secret-key material.

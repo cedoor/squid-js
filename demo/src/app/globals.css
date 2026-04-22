@@ -70,3 +70,26 @@ button {
   0%, 49% { opacity: 1; }
   50%, 100% { opacity: 0; }
 }
+
+.demo-github-link {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  color: var(--ink-soft);
+  background: oklch(0.98 0.01 80);
+  border: 1px solid var(--rule);
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+
+.demo-github-link:hover {
+  color: var(--ink);
+  background: oklch(0.96 0.02 80);
+  border-color: var(--ink-faint);
+}
