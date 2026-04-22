@@ -1,4 +1,4 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "cd .. && pnpm install --config.link-workspace-packages=false"
+  "installCommand": "pnpm install --no-link-workspace-packages --no-lockfile"
 }
